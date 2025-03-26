@@ -145,11 +145,6 @@ A estrutura foi definida considerando os seguintes princípios:
 | **Hosts** | Contém as configurações de serviços como APIs públicas, APIs internas e Workers. | Presentation, Infrastructure |
 | **Tools** | Contém ferramentas auxiliares, como scripts de migração de banco de dados. | Persistence |
 | **Tests** | Contém testes unitários e de integração. | Dependências das camadas testadas |
-| **CrossCutting** | Gerencia aspectos transversais como logging, segurança e validação. | Nenhuma |
-| **Presentation** | Define a API HTTP, controladores REST e interfaces de entrada. | Core/Application |
-| **Hosts** | Contém as configurações de serviços como APIs públicas, APIs internas e Workers. | Presentation, Infrastructure |
-| **Tools** | Contém ferramentas auxiliares, como scripts de migração de banco de dados. | Persistence |
-| **Tests** | Contém testes unitários e de integração. | Dependências das camadas testadas |
 
 ---
 
