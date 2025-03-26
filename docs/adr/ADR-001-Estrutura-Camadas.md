@@ -24,6 +24,8 @@ MeuProjeto
  │   │   ├── MeuProjeto.Domain/
  │   │   │   ├── Entities/
  │   │   │   │   ├── Order.cs
+ │   │   │   ├── Services/
+ │   │   │   │   ├── OrderDomainService.cs
  │   │   │   ├── Repositories/
  │   │   │   │   ├── IOrderRepository.cs
  │   │   ├── MeuProjeto.Application.Contracts/
@@ -97,7 +99,7 @@ MeuProjeto
 ---
 
 ### **Justificativa**  
-A estrutura foi definida considerando os seguintes princípios:
+A estrutura foi definida considerando os seguintes princípios:  
 
 1. **Modularidade**: Cada camada possui responsabilidade única e bem definida, evitando sobreposição de funções.  
 2. **Baixo Acoplamento**: A separação entre **Domínio, Aplicação, Infraestrutura e Persistência** garante independência e flexibilidade.  
@@ -114,6 +116,7 @@ A estrutura foi definida considerando os seguintes princípios:
 | **Core** | Define a lógica de negócio e aplicação (Domínio, Casos de Uso e Serviços). | Nenhuma |
 | **Core/Domain.Shared** | Contém contratos e definições compartilhadas dentro do domínio. | Core/Domain |
 | **Core/Domain** | Define as entidades, repositórios e regras de negócio. | Core/Domain.Shared |
+| **Core/Domain/Services** | Implementa regras de negócio puras sem dependências externas. | Core/Domain |
 | **Core/Application.Contracts** | Define interfaces para Serviços, Use Cases e Workflows. | Core/Domain |
 | **Core/Application** | Implementa a lógica de aplicação, incluindo Serviços, Use Cases e Workflows. | Core/Application.Contracts, Core/Domain |
 | **Infrastructure.Abstractions** | Define contratos técnicos para infraestrutura, como Cache, Mensageria e Adapters. | Nenhuma |
