@@ -18,45 +18,45 @@ Foi definida a seguinte estrutura de camadas para o projeto:
 ```
 MeuProjeto
  ├── src/
- │   ├── MeuProjeto.Shared/
- │   │   ├── Constants.cs
- │   ├── MeuProjeto.Core/
- │   │   ├── Entities/
- │   │   │   ├── Order.cs
- │   │   ├── Services/
- │   │   │   ├── OrderService.cs
- │   │   ├── Repositories/
- │   │   │   ├── IOrderRepository.cs
- │   ├── MeuProjeto.Application.Contracts/
- │   │   ├── DTOs/
- │   │   │   ├── OrderDto.cs
- │   │   ├── Services/
- │   │   │   ├── IOrderAppService.cs
- │   │   ├── UseCases/
- │   │   │   ├── IProcessOrderUseCase.cs
- │   │   ├── Workflows/
- │   │   │   ├── IOrderProcessingWorkflow.cs
- │   ├── MeuProjeto.Application/
- │   │   ├── Services/
- │   │   │   ├── OrderAppService.cs
- │   │   ├── UseCases/
- │   │   │   ├── ProcessOrderUseCase.cs
- │   │   ├── Workflows/
- │   │   │   ├── OrderProcessingWorkflow.cs
- │   ├── MeuProjeto.Infrastructure.Abstractions/
- │   │   ├── Caching/
- │   │   │   ├── ICacheService.cs
- │   │   ├── Messaging/
- │   │   │   ├── IMessageBus.cs
- │   │   ├── Adapters/
- │   │   │   ├── IPaymentAdapter.cs
- │   ├── MeuProjeto.Infrastructure/
- │   │   ├── Caching/
- │   │   │   ├── RedisCacheService.cs
- │   │   ├── Bus/
- │   │   │   ├── RabbitMqBusService.cs
- │   │   ├── Adapters/
- │   │   │   ├── StripePaymentAdapter.cs
+ │   ├── Core/
+ │   │   ├── MeuProjeto.Domain.Shared/
+ │   │   │   ├── DomainConstants.cs
+ │   │   ├── MeuProjeto.Domain/
+ │   │   │   ├── Entities/
+ │   │   │   │   ├── Order.cs
+ │   │   │   ├── Repositories/
+ │   │   │   │   ├── IOrderRepository.cs
+ │   │   ├── MeuProjeto.Application.Contracts/
+ │   │   │   ├── DTOs/
+ │   │   │   │   ├── OrderDto.cs
+ │   │   │   ├── Services/
+ │   │   │   │   ├── IOrderAppService.cs
+ │   │   │   ├── UseCases/
+ │   │   │   │   ├── IProcessOrderUseCase.cs
+ │   │   │   ├── Workflows/
+ │   │   │   │   ├── IOrderProcessingWorkflow.cs
+ │   │   ├── MeuProjeto.Application/
+ │   │   │   ├── Services/
+ │   │   │   │   ├── OrderAppService.cs
+ │   │   │   ├── UseCases/
+ │   │   │   │   ├── ProcessOrderUseCase.cs
+ │   │   │   ├── Workflows/
+ │   │   │   │   ├── OrderProcessingWorkflow.cs
+ │   ├── Infrastructure/
+ │   │   ├── MeuProjeto.Infrastructure.Abstractions/
+ │   │   │   ├── Caching/
+ │   │   │   │   ├── ICacheService.cs
+ │   │   │   ├── Messaging/
+ │   │   │   │   ├── IMessageBus.cs
+ │   │   │   ├── Adapters/
+ │   │   │   │   ├── IPaymentAdapter.cs
+ │   │   ├── MeuProjeto.Infrastructure/
+ │   │   │   ├── Caching/
+ │   │   │   │   ├── RedisCacheService.cs
+ │   │   │   ├── Bus/
+ │   │   │   │   ├── RabbitMqBusService.cs
+ │   │   │   ├── Adapters/
+ │   │   │   │   ├── StripePaymentAdapter.cs
  │   ├── Persistence/
  │   │   ├── MeuProjeto.Persistence.EntityFrameworkCore/
  │   │   │   ├── AppDbContext.cs
@@ -92,63 +92,64 @@ MeuProjeto
  │   │   ├── OrderProcessingWorkflowTests.cs
  │   ├── MeuProjeto.Persistence.Tests/
  │   │   ├── OrderRepositoryTests.cs
- ├── README.md
- ├── .gitignore
- ├── docker-compose.yml
 ```
 
 ---
 
-## **Justificativa**
+### **Justificativa**  
 A estrutura foi definida considerando os seguintes princípios:
 
-1. **Modularidade**: Cada camada tem responsabilidade única e bem definida.
-2. **Baixo Acoplamento**: A separação entre Contracts, Abstractions e Implementações evita dependências diretas.
-3. **Facilidade de Testes**: As interfaces permitem substituir dependências reais por mocks.
-4. **Escalabilidade**: Permite a expansão da aplicação sem refatorações drásticas.
-5. **Facilidade de Manutenção**: O código é organizado e segmentado de forma intuitiva.
+1. **Modularidade**: Cada camada possui responsabilidade única e bem definida, evitando sobreposição de funções.  
+2. **Baixo Acoplamento**: A separação entre **Domínio, Aplicação, Infraestrutura e Persistência** garante independência e flexibilidade.  
+3. **Facilidade de Testes**: A definição clara de interfaces permite substituir dependências reais por mocks durante os testes.  
+4. **Escalabilidade**: A modularização possibilita expansão sem grandes refatorações, permitindo o crescimento sustentável do projeto.  
+5. **Facilidade de Manutenção**: A organização intuitiva do código simplifica a manutenção e a adoção por novos desenvolvedores.  
 
 ---
 
-## **Relacionamento entre as Camadas**
+### **Relacionamento entre as Camadas**  
 
 | Camada | Descrição | Dependências |
 |--------|----------|-------------|
-| **Shared** | Contém constantes e utilitários comuns. | Nenhuma |
-| **Core** | Define a lógica de domínio (Entidades, Serviços e Repositórios). | Shared |
-| **Application.Contracts** | Define interfaces para Serviços, Use Cases e Workflows. | Core, Shared |
-| **Application** | Implementa a lógica de aplicação (Casos de Uso, Serviços e Workflows). | Application.Contracts, Core, Shared |
-| **Infrastructure.Abstractions** | Define contratos técnicos para Cache, Mensageria e Adapters. | Shared |
-| **Infrastructure** | Implementa serviços de infraestrutura como Redis, RabbitMQ e Stripe. | Infrastructure.Abstractions, Shared |
-| **Persistence** | Implementa a camada de persistência com EF Core e DataAccess. | Core, Shared |
-| **CrossCutting** | Gerencia logging, segurança e outras preocupações transversais. | Shared |
-| **Presentation** | Define a API HTTP e os controladores REST. | Application, Shared |
-| **Hosts** | Configura serviços como APIs, Workers e Background Jobs. | Application, Infrastructure, Shared |
-| **Tools** | Scripts auxiliares como migração de banco de dados. | Persistence, Shared |
-| **Tests** | Testes unitários e de integração. | Dependências das camadas testadas |
+| **Core** | Define a lógica de negócio e aplicação (Domínio, Casos de Uso e Serviços). | Nenhuma |
+| **Core/Domain.Shared** | Contém contratos e definições compartilhadas dentro do domínio. | Core/Domain |
+| **Core/Domain** | Define as entidades, repositórios e regras de negócio. | Core/Domain.Shared |
+| **Core/Application.Contracts** | Define interfaces para Serviços, Use Cases e Workflows. | Core/Domain |
+| **Core/Application** | Implementa a lógica de aplicação, incluindo Serviços, Use Cases e Workflows. | Core/Application.Contracts, Core/Domain |
+| **Infrastructure.Abstractions** | Define contratos técnicos para infraestrutura, como Cache, Mensageria e Adapters. | Nenhuma |
+| **Infrastructure** | Implementa serviços de infraestrutura como Redis, RabbitMQ e Adapters de pagamento. | Infrastructure.Abstractions |
+| **Persistence** | Implementa a camada de persistência, incluindo EF Core e DataAccess. | Core/Domain |
+| **CrossCutting** | Gerencia aspectos transversais como logging, segurança e validação. | Nenhuma |
+| **Presentation** | Define a API HTTP, controladores REST e interfaces de entrada. | Core/Application |
+| **Hosts** | Contém as configurações de serviços como APIs públicas, APIs internas e Workers. | Presentation, Infrastructure |
+| **Tools** | Contém ferramentas auxiliares, como scripts de migração de banco de dados. | Persistence |
+| **Tests** | Contém testes unitários e de integração. | Dependências das camadas testadas |
 
 ---
 
-## **Consequências**
-✅ **Benefícios**
-- Melhor organização e modularidade.
-- Facilidade para testes unitários e de integração.
-- Facilita a substituição de tecnologias na infraestrutura.
+### **Consequências**  
 
-⚠ **Possíveis Desafios**
-- Pode parecer complexo inicialmente devido à separação de camadas.
-- Exige boa governança para manter a organização.
+✅ **Benefícios**  
+- Estrutura bem organizada e modular.  
+- Maior facilidade para testes unitários e integração.  
+- Possibilidade de substituir tecnologias sem impactar o núcleo do sistema.  
+- Escalabilidade para futuras evoluções do projeto.  
 
----
-
-## **Alternativas Consideradas**
-1. **Monólito Simples**: Sem separação de camadas, tudo junto. **(Rejeitado - difícil de escalar e manter)**
-2. **Arquitetura Hexagonal (Ports & Adapters)**: Abstrai completamente a infraestrutura. **(Aceitável, mas mais complexo)**
-3. **Arquitetura em Camadas Clássica**: Separação básica entre domínio, aplicação e infraestrutura. **(Menos flexível para mudanças)**
-
-A arquitetura escolhida balanceia flexibilidade, organização e facilidade de manutenção.
+⚠ **Possíveis Desafios**  
+- Pode parecer complexa para novos desenvolvedores que não estejam acostumados com arquitetura modular.  
+- Requer governança para manter a separação correta entre camadas e evitar violações de dependência.  
 
 ---
 
-## **Decisão Final**
+### **Alternativas Consideradas**  
+
+1. **Monólito Simples**: Toda a lógica misturada em um único projeto. **(Rejeitado - dificulta manutenção e escalabilidade)**  
+2. **Arquitetura Hexagonal (Ports & Adapters)**: Desacopla completamente as interações externas. **(Aceitável, mas adiciona complexidade desnecessária ao escopo atual)**  
+3. **Arquitetura em Camadas Clássica**: Separa Domínio, Aplicação e Infraestrutura, mas sem modularização explícita. **(Menos flexível para mudanças a longo prazo)**  
+
+A arquitetura escolhida proporciona um equilíbrio entre **flexibilidade, organização e facilidade de manutenção**, garantindo que o projeto possa evoluir de forma sustentável.  
+
+---
+
+### **Decisão Final**  
 A estrutura modular foi **aceita** e será adotada como padrão para o projeto **MeuProjeto**.
