@@ -7,7 +7,7 @@
 ---
 
 ## **Contexto**
-Este ADR tem como objetivo definir a estrutura de camadas do projeto **MeuProjeto**, organizando a separação de responsabilidades para garantir modularidade, manutenibilidade e escalabilidade.
+Este ADR tem como objetivo definir a estrutura de camadas do projeto **NetArch.Template**, organizando a separação de responsabilidades para garantir modularidade, manutenibilidade e escalabilidade.
 
 O projeto segue princípios de **Clean Architecture**, **Domain-Driven Design (DDD)** e **SOLID**, buscando desacoplamento entre a camada de aplicação, domínio, infraestrutura e apresentação.
 
@@ -17,12 +17,12 @@ O projeto segue princípios de **Clean Architecture**, **Domain-Driven Design (D
 Foi definida a seguinte estrutura de camadas para o projeto:
 
 ```
-MeuProjeto
+NetArch.Template
  ├── src/
  │   ├── Core/
- │   │   ├── MeuProjeto.Domain.Shared/
+ │   │   ├── NetArch.Template.Domain.Shared/
  │   │   │   ├── DomainConstants.cs
- │   │   ├── MeuProjeto.Domain/
+ │   │   ├── NetArch.Template.Domain/
  │   │   │   ├── Entities/
  │   │   │   │   ├── Order.cs
  │   │   │   ├── Services/
@@ -32,7 +32,7 @@ MeuProjeto
  │   │   │   │   ├── IOrderRepository.cs
  │   │   │   ├── ReadModels/
  │   │   │   │   ├── IOrderSummaryQuery.cs
- │   │   ├── MeuProjeto.Application.Contracts/
+ │   │   ├── NetArch.Template.Application.Contracts/
  │   │   │   ├── DTOs/
  │   │   │   │   ├── OrderDto.cs
  │   │   │   ├── Services/
@@ -41,7 +41,7 @@ MeuProjeto
  │   │   │   │   ├── IProcessOrderUseCase.cs
  │   │   │   ├── Workflows/
  │   │   │   │   ├── IOrderProcessingWorkflow.cs
- │   │   ├── MeuProjeto.Application/
+ │   │   ├── NetArch.Template.Application/
  │   │   │   ├── Services/
  │   │   │   │   ├── OrderAppService.cs
  │   │   │   ├── UseCases/
@@ -49,14 +49,14 @@ MeuProjeto
  │   │   │   ├── Workflows/
  │   │   │   │   ├── OrderProcessingWorkflow.cs
  │   ├── Infrastructure/
- │   │   ├── MeuProjeto.Infrastructure.Abstractions/
+ │   │   ├── NetArch.Template.Infrastructure.Abstractions/
  │   │   │   ├── Caching/
  │   │   │   │   ├── ICacheService.cs
  │   │   │   ├── Messaging/
  │   │   │   │   ├── IMessageBus.cs
  │   │   │   ├── Adapters/
  │   │   │   │   ├── IPaymentAdapter.cs
- │   │   ├── MeuProjeto.Infrastructure/
+ │   │   ├── NetArch.Template.Infrastructure/
  │   │   │   ├── Caching/
  │   │   │   │   ├── RedisCacheService.cs
  │   │   │   ├── Bus/
@@ -64,10 +64,10 @@ MeuProjeto
  │   │   │   ├── Adapters/
  │   │   │   │   ├── StripePaymentAdapter.cs
  │   ├── Persistence/
- │   │   ├── MeuProjeto.Persistence.EntityFrameworkCore/
+ │   │   ├── NetArch.Template.Persistence.EntityFrameworkCore/
  │   │   │   ├── AppDbContext.cs
  │   │   │   ├── OrderRepository.cs
- │   │   ├── MeuProjeto.Persistence.DataAccess/
+ │   │   ├── NetArch.Template.Persistence.DataAccess/
  │   │   │   ├── IUnitOfWork.cs
  │   │   │   ├── GenericRepository.cs
  │   │   │   ├── Services/
@@ -81,36 +81,56 @@ MeuProjeto
  │   │   │   │   ├── CreateProcedures.sql
  │   │   │   │   ├── CreateViews.sql
  │   ├── CrossCutting/
- │   │   ├── MeuProjeto.CrossCutting.Logging/
+ │   │   ├── NetArch.Template.CrossCutting.Logging/
  │   │   │   ├── SerilogConfig.cs
- │   │   ├── MeuProjeto.CrossCutting.Security/
+ │   │   ├── NetArch.Template.CrossCutting.Security/
  │   │   │   ├── JwtService.cs
  │   ├── Presentation/
- │   │   ├── MeuProjeto.HttpApi/
+ │   │   ├── NetArch.Template.HttpApi/
  │   │   │   ├── Controllers/
  │   │   │   │   ├── OrderController.cs
  │   ├── Hosts/
- │   │   ├── MeuProjeto.HttpApi.Public/
+ │   │   ├── NetArch.Template.HttpApi.Public/
  │   │   │   ├── Program.cs
- │   │   ├── MeuProjeto.HttpApi.Internal/
+ │   │   ├── NetArch.Template.HttpApi.Internal/
  │   │   │   ├── Program.cs
- │   │   ├── MeuProjeto.Worker/
+ │   │   ├── NetArch.Template.Worker/
  │   │   │   ├── WorkerService.cs
  │   ├── Tools/
- │   │   ├── MeuProjeto.DbMigrator/
+ │   │   ├── NetArch.Template.DbMigrator/
  │   │   │   ├── MigrationRunner.cs
  ├── tests/
- │   ├── MeuProjeto.Core.Tests/
- │   │   ├── OrderTests.cs
- │   ├── MeuProjeto.Application.Tests/
- │   │   ├── OrderAppServiceTests.cs
- │   │   ├── ProcessOrderUseCaseTests.cs
- │   │   ├── OrderProcessingWorkflowTests.cs
- │   ├── MeuProjeto.Persistence.Tests/
- │   │   ├── OrderRepositoryTests.cs
- │   │   ├── OrderProceduresTests.cs
- │   │   ├── OrderViewsTests.cs
-
+ │   ├── NetArch.Template.TestBase/
+ │   │   ├── TestFixtures/
+ │   │   │   ├── DatabaseFixture.cs
+ │   │   ├── Builders/
+ │   │   │   ├── OrderBuilder.cs
+ │   │   ├── Mocks/
+ │   │   │   ├── RepositoryMocks.cs
+ │   ├── NetArch.Template.UnitTests/
+ │   │   ├── Domain/
+ │   │   │   ├── Entities/
+ │   │   │   │   ├── OrderTests.cs
+ │   │   │   ├── Services/
+ │   │   │   │   ├── OrderDomainServiceTests.cs
+ │   │   ├── Application/
+ │   │   │   ├── Services/
+ │   │   │   │   ├── OrderAppServiceTests.cs
+ │   │   │   ├── UseCases/
+ │   │   │   │   ├── ProcessOrderUseCaseTests.cs
+ │   │   │   ├── Workflows/
+ │   │   │   │   ├── OrderProcessingWorkflowTests.cs
+ │   ├── NetArch.Template.IntegrationTests/
+ │   │   ├── Persistence/
+ │   │   │   ├── Repositories/
+ │   │   │   │   ├── OrderRepositoryTests.cs
+ │   │   │   ├── Services/
+ │   │   │   │   ├── OrderProceduresTests.cs
+ │   │   │   ├── Queries/
+ │   │   │   │   ├── OrderViewsTests.cs
+ │   │   ├── API/
+ │   │   │   ├── Controllers/
+ │   │   │   │   ├── OrderControllerTests.cs
 ```
 
 ---
@@ -144,7 +164,9 @@ A estrutura foi definida considerando os seguintes princípios:
 | **Presentation** | Define a API HTTP, controladores REST e interfaces de entrada. | Core/Application |
 | **Hosts** | Contém as configurações de serviços como APIs públicas, APIs internas e Workers. | Presentation, Infrastructure |
 | **Tools** | Contém ferramentas auxiliares, como scripts de migração de banco de dados. | Persistence |
-| **Tests** | Contém testes unitários e de integração. | Dependências das camadas testadas |
+| **TestBase** | Contém código compartilhado para todos os tipos de testes, como fixtures, builders e mocks. | Dependências das camadas testadas |
+| **UnitTests** | Contém testes unitários organizados por camada (Domain, Application). | TestBase |
+| **IntegrationTests** | Contém testes de integração para persistência, APIs e fluxos completos. | TestBase |
 
 ---
 
@@ -154,21 +176,21 @@ Uma consideração importante nesta arquitetura é o tratamento de procedures e 
 
 1. **Interfaces e Abstrações**:
    - Para procedures que executam operações de negócio:
-     - As interfaces são definidas como serviços em `MeuProjeto.Domain/Services`.
+     - As interfaces são definidas como serviços em `NetArch.Template.Domain/Services`.
      - Exemplo: `IOrderProcessingService.cs` 
    - Para views que fornecem dados agregados ou relatórios:
-     - As interfaces são definidas como queries em `MeuProjeto.Domain/ReadModels`.
+     - As interfaces são definidas como queries em `NetArch.Template.Domain/ReadModels`.
      - Exemplo: `IOrderSummaryQuery.cs`
 
 2. **DTOs para Resultados de Procedures e Views**:
-   - Os DTOs específicos para resultados de procedures e views são definidos em `MeuProjeto.Persistence.DataAccess/DTOs`
+   - Os DTOs específicos para resultados de procedures e views são definidos em `NetArch.Template.Persistence.DataAccess/DTOs`
    - Estes DTOs representam a estrutura exata dos dados retornados pelas procedures ou views
    - Exemplo: `OrderSummaryDto.cs` para resultados de views e `OrderProcessingResultDto.cs` para resultados de procedures
    - Estes DTOs podem ser mapeados para DTOs de aplicação quando necessário, através de AutoMapper ou mapeamento manual
 
 3. **Separação de Implementações**:
-   - Todas as implementações específicas do Entity Framework Core ficam em `MeuProjeto.Persistence.EntityFrameworkCore`.
-   - Todas as demais implementações de acesso a dados ficam em `MeuProjeto.Persistence.DataAccess`, incluindo:
+   - Todas as implementações específicas do Entity Framework Core ficam em `NetArch.Template.Persistence.EntityFrameworkCore`.
+   - Todas as demais implementações de acesso a dados ficam em `NetArch.Template.Persistence.DataAccess`, incluindo:
      - Implementações de serviços para procedures
      - Implementações de queries para views
      - Adapters para outros mecanismos de persistência (NoSQL, APIs externas, etc.)
@@ -176,7 +198,7 @@ Uma consideração importante nesta arquitetura é o tratamento de procedures e 
      - Scripts SQL para criação de procedures e views
 
 4. **Scripts SQL**:
-   - Os scripts SQL são armazenados no projeto `MeuProjeto.Persistence.DataAccess/Scripts`.
+   - Os scripts SQL são armazenados no projeto `NetArch.Template.Persistence.DataAccess/Scripts`.
    - Esta organização mantém todo o código relacionado a acesso a dados em um único projeto.
 
 5. **Regras de Negócio**:
@@ -200,6 +222,37 @@ Esta abordagem permite que:
 
 ---
 
+### **Estrutura de Testes**
+
+A organização dos testes segue uma estrutura clara e consistente:
+
+1. **NetArch.Template.TestBase**:
+   - Contém código compartilhado entre todos os tipos de testes
+   - Inclui fixtures para configuração de banco de dados, API, etc.
+   - Fornece builders para criação de objetos de teste
+   - Disponibiliza mocks reutilizáveis de repositórios e serviços
+   - Centraliza helpers e utilitários para testes
+
+2. **NetArch.Template.UnitTests**:
+   - Testes de unidade organizados por camada/projeto
+   - Focados em testar componentes isoladamente
+   - Utilizam mocks extensivamente para isolar dependências
+   - Executam rapidamente, sem dependências externas
+
+3. **NetArch.Template.IntegrationTests**:
+   - Testes que verificam a interação entre componentes
+   - Testam fluxos completos envolvendo múltiplas camadas
+   - Verificam a interação com banco de dados real ou em memória
+   - Testam APIs através de clientes HTTP
+
+Esta estrutura de testes facilita:
+- Execução separada de testes por tipo (unitários vs. integração)
+- Reutilização de código de teste através do projeto Base
+- Organização clara por responsabilidade e escopo
+- Manutenção mais simples através da consistência entre implementação e testes
+
+---
+
 ### **Consequências**  
 
 ✅ **Benefícios**  
@@ -208,11 +261,13 @@ Esta abordagem permite que:
 - Possibilidade de substituir tecnologias sem impactar o núcleo do sistema.  
 - Escalabilidade para futuras evoluções do projeto.  
 - Encapsulamento adequado de procedures e views com regras de negócio.
+- Estrutura de testes bem definida e alinhada com a organização do código.
 
 ⚠ **Possíveis Desafios**  
 - Pode parecer complexa para novos desenvolvedores que não estejam acostumados com arquitetura modular.  
 - Requer governança para manter a separação correta entre camadas e evitar violações de dependência.  
 - Necessidade de sincronizar regras de negócio entre o domínio e procedures de banco de dados.
+- Manutenção de múltiplos projetos de teste exige disciplina na organização do código.
 
 ---
 
@@ -222,10 +277,11 @@ Esta abordagem permite que:
 2. **Arquitetura Hexagonal (Ports & Adapters)**: Desacopla completamente as interações externas. **(Aceitável, mas adiciona complexidade desnecessária ao escopo atual)**  
 3. **Arquitetura em Camadas Clássica**: Separa Domínio, Aplicação e Infraestrutura, mas sem modularização explícita. **(Menos flexível para mudanças a longo prazo)**  
 4. **Embutir Procedures no Domínio**: Implementar procedures e views diretamente como serviços de domínio. **(Rejeitado - violaria a pureza do domínio)**
+5. **Estrutura de Testes por Funcionalidade**: Agrupar testes por feature em vez de por tipo. **(Rejeitado - dificulta a separação entre testes rápidos e lentos)**
 
 A arquitetura escolhida proporciona um equilíbrio entre **flexibilidade, organização e facilidade de manutenção**, garantindo que o projeto possa evoluir de forma sustentável.  
 
 ---
 
 ### **Decisão Final**  
-A estrutura modular foi **aceita** e será adotada como padrão para o projeto **MeuProjeto**, incluindo o tratamento adequado para procedures e views com regras de negócio.
+A estrutura modular foi **aceita** e será adotada como padrão para o projeto **NetArch.Template**, incluindo o tratamento adequado para procedures e views com regras de negócio e uma estrutura de testes bem definida.
