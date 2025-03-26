@@ -16,6 +16,7 @@ O projeto segue princípios de **Clean Architecture**, **Domain-Driven Design (D
 ## **Decisão**
 Foi definida a seguinte estrutura de camadas para o projeto:
 
+```
 MeuProjeto
  ├── src/
  │   ├── Core/
@@ -110,6 +111,7 @@ MeuProjeto
  │   │   ├── OrderProceduresTests.cs
  │   │   ├── OrderViewsTests.cs
 
+```
 
 ---
 
