@@ -73,6 +73,9 @@ MeuProjeto
  │   │   │   │   ├── OrderProcessingService.cs
  │   │   │   ├── Queries/
  │   │   │   │   ├── OrderSummaryQuery.cs
+ │   │   │   ├── DTOs/
+ │   │   │   │   ├── OrderSummaryDto.cs
+ │   │   │   │   ├── OrderProcessingResultDto.cs
  │   │   │   ├── Scripts/
  │   │   │   │   ├── CreateProcedures.sql
  │   │   │   │   ├── CreateViews.sql
@@ -134,7 +137,7 @@ A estrutura foi definida considerando os seguintes princípios:
 | **Infrastructure.Abstractions** | Define contratos técnicos para infraestrutura, como Cache, Mensageria e Adapters. | Nenhuma |
 | **Infrastructure** | Implementa serviços de infraestrutura como Redis, RabbitMQ e Adapters de pagamento. | Infrastructure.Abstractions |
 | **Persistence/EntityFrameworkCore** | Implementa a persistência específica para Entity Framework Core. | Core/Domain |
-| **Persistence/DataAccess** | Contém todas as implementações de acesso a dados que não são específicas do EF Core, incluindo executores de stored procedures, leitores de views, outros mecanismos de acesso a dados, e scripts SQL. | Core/Domain |
+| **Persistence/DataAccess** | Contém todas as implementações de acesso a dados que não são específicas do EF Core, incluindo executores de stored procedures, leitores de views, outros mecanismos de acesso a dados, DTOs específicos de banco de dados, e scripts SQL. | Core/Domain |
 | **CrossCutting** | Gerencia aspectos transversais como logging, segurança e validação. | Nenhuma |
 | **Presentation** | Define a API HTTP, controladores REST e interfaces de entrada. | Core/Application |
 | **Hosts** | Contém as configurações de serviços como APIs públicas, APIs internas e Workers. | Presentation, Infrastructure |
@@ -160,7 +163,13 @@ Uma consideração importante nesta arquitetura é o tratamento de procedures e 
      - As interfaces são definidas como queries em `MeuProjeto.Domain/ReadModels`.
      - Exemplo: `IOrderSummaryQuery.cs`
 
-2. **Separação de Implementações**:
+2. **DTOs para Resultados de Procedures e Views**:
+   - Os DTOs específicos para resultados de procedures e views são definidos em `MeuProjeto.Persistence.DataAccess/DTOs`
+   - Estes DTOs representam a estrutura exata dos dados retornados pelas procedures ou views
+   - Exemplo: `OrderSummaryDto.cs` para resultados de views e `OrderProcessingResultDto.cs` para resultados de procedures
+   - Estes DTOs podem ser mapeados para DTOs de aplicação quando necessário, através de AutoMapper ou mapeamento manual
+
+3. **Separação de Implementações**:
    - Todas as implementações específicas do Entity Framework Core ficam em `MeuProjeto.Persistence.EntityFrameworkCore`.
    - Todas as demais implementações de acesso a dados ficam em `MeuProjeto.Persistence.DataAccess`, incluindo:
      - Implementações de serviços para procedures
@@ -169,11 +178,11 @@ Uma consideração importante nesta arquitetura é o tratamento de procedures e 
      - Implementações de repositórios não-EF
      - Scripts SQL para criação de procedures e views
 
-3. **Scripts SQL**:
+4. **Scripts SQL**:
    - Os scripts SQL são armazenados no projeto `MeuProjeto.Persistence.DataAccess/Scripts`.
    - Esta organização mantém todo o código relacionado a acesso a dados em um único projeto.
 
-4. **Regras de Negócio**:
+5. **Regras de Negócio**:
    - Embora procedures possam conter regras de negócio, a camada de domínio permanece como fonte primária de regras.
    - Procedures devem ser usadas principalmente para:
      - Operações em lote que necessitam de alto desempenho
@@ -187,6 +196,7 @@ Esse design segue princípios de CQRS (Command Query Responsibility Segregation)
 
 Esta abordagem permite que:
 - As interfaces fiquem no domínio, mantendo o controle da regra de negócio nesta camada
+- Os DTOs específicos de banco de dados fiquem na camada de persistência
 - As implementações fiquem organizadas por tecnologia (EF Core vs. outros mecanismos)
 - O domínio continue puro (sem dependências de infraestrutura)
 - As implementações de banco de dados possam ser substituídas sem afetar o domínio
