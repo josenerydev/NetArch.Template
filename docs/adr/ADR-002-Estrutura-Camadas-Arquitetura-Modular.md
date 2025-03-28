@@ -91,7 +91,7 @@ A estrutura foi definida considerando os seguintes princípios:
 ### **Core**
 
 - **Domain.Shared**: Enums, ValueObjects, exceptions e constantes. Reutilizado por toda a solução.  
-- **Domain**: Contém entidades, agregados, interfaces de repositório e serviços de domínio.  
+- **Domain**: Contém entidades, agregados, interfaces de repositório e serviços de domínio. Também define interfaces de queries e serviços que representam regras de negócio, mesmo que sejam implementadas por procedures.  
 - **Application.Contracts**: Define as interfaces dos casos de uso, DTOs e contratos públicos da aplicação.  
 - **Application**: Implementação dos casos de uso, serviços de orquestração e regras de aplicação.
 
@@ -103,16 +103,16 @@ A estrutura foi definida considerando os seguintes princípios:
 ### **Persistence**
 
 - **Persistence.EntityFrameworkCore**: Implementação de repositórios e `DbContext` usando EF Core.  
-- **Persistence.DataAccess**: Acesso a procedures, views e queries diretas. Contém DTOs de banco e scripts SQL.
+- **Persistence.DataAccess**: Acesso a procedures, views e queries diretas. Contém DTOs de banco, implementações de queries e serviços baseados em banco de dados.
 
 ### **Presentation**
 
-- **HttpApi**: Controllers REST, filtros, middlewares e validadores para entrada HTTP.  
+- **HttpApi**: Controllers REST, filtros, middlewares, validadores e métodos de extensão para registrar serviços da aplicação.  
 - **Grpc**: Serviços gRPC, interceptadores e definição de endpoints baseados em `.proto`.
 
 ### **Hosts**
 
-- **HttpApi.Public**: Entrypoint REST público. Configura DI, middlewares, Serilog, Swagger, etc.  
+- **HttpApi.Public**: Entrypoint REST público. Configura o pipeline do ASP.NET Core e chama os métodos de extensão da camada `Presentation`.  
 - **Worker.Processor**: Worker Service para consumidores de fila, cron jobs e tarefas em background.  
 - **Grpc.Host**: Host para endpoints gRPC, com configurações específicas e bindings.
 
