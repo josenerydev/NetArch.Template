@@ -1,0 +1,6 @@
+services:
+  netarch.template.httpapi.public:
+    image: ${DOCKER_REGISTRY-}netarchtemplatehttpapipublic
+    build:
+      context: .
+      dockerfile: src/Hosts/NetArch.Template.HttpApi.Public/Dockerfile
