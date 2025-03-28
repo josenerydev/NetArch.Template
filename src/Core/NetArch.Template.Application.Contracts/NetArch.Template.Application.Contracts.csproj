@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NetArch.Template.Domain.Shared\NetArch.Template.Domain.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

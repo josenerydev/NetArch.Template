@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NetArch.Template.Domain.Shared.Interfaces
+﻿namespace NetArch.Template.Domain.Shared.Interfaces
 {
-    internal interface IEntity
+    public interface IEntity
     {
+        Guid Id { get; set; }
     }
 }

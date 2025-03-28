@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NetArch.Template.Application.Contracts.DTOs.Entity
+﻿namespace NetArch.Template.Application.Contracts.DTOs.Entity
 {
-    internal class EntityDto
+    public class EntityDto
     {
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

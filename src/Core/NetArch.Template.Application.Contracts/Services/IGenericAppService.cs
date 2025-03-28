@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NetArch.Template.Domain.Shared.DTOs;
 
 namespace NetArch.Template.Application.Contracts.Services
 {
-    internal interface IGenericAppService
+    public interface IGenericAppService<TEntityDto, TCreateEntityDto, TUpdateEntityDto>
     {
+        Task<TEntityDto> GetAsync(Guid id);
+        Task<List<TEntityDto>> GetAllAsync();
+        Task<PagedResultDto<TEntityDto>> GetPagedAsync(int skipCount, int maxResultCount);
+        Task<TEntityDto> CreateAsync(TCreateEntityDto input);
+        Task<TEntityDto> UpdateAsync(Guid id, TUpdateEntityDto input);
+        Task DeleteAsync(Guid id);
     }
 }
