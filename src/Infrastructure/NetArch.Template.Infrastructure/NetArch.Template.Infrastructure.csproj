@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

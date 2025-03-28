@@ -1,4 +1,6 @@
-﻿namespace NetArch.Template.Infrastructure
+﻿using NetArch.Template.Infrastructure.Abstractions;
+
+namespace NetArch.Template.Infrastructure
 {
     public class DateTimeProvider : IDateTimeProvider
     {
