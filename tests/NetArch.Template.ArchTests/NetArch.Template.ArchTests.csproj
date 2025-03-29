@@ -18,9 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Core\NetArch.Template.Application.Contracts\NetArch.Template.Application.Contracts.csproj" />
       <ProjectReference Include="..\..\src\Core\NetArch.Template.Application\NetArch.Template.Application.csproj" />
       <ProjectReference Include="..\..\src\Core\NetArch.Template.Domain\NetArch.Template.Domain.csproj" />
       <ProjectReference Include="..\..\src\Hosts\NetArch.Template.HttpApi.Public\NetArch.Template.HttpApi.Public.csproj" />
+      <ProjectReference Include="..\..\src\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\NetArch.Template.Infrastructure\NetArch.Template.Infrastructure.csproj" />
       <ProjectReference Include="..\..\src\Persistence\NetArch.Template.Persistence.EntityFrameworkCore\NetArch.Template.Persistence.EntityFrameworkCore.csproj" />
       <ProjectReference Include="..\..\src\Presentation\NetArch.Template.HttpApi\NetArch.Template.HttpApi.csproj" />
