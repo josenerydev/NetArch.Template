@@ -1,23 +1,46 @@
-var builder = WebApplication.CreateBuilder(args);
+using NetArch.Template.HttpApi;
+using NetArch.Template.Infrastructure;
 
-// Add services to the container.
+using Serilog;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Logger = SerilogExtensions.CreateBootstrapLogger();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting web application");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddSerilogConfiguration(builder.Configuration);
+
+    builder.Services.AddControllers()
+        .AddApplicationPart(AssemblyReference.PresentationAssembly);
+
+    builder.Services.AddEndpointsApiExplorer();
+
+    builder.Services.AddSwaggerGen();
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseSerilogRequestLoggingConfiguration();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    await app.RunAsync();
 }
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}

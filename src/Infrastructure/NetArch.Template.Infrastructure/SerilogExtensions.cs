@@ -4,91 +4,82 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.ApplicationInsights.TelemetryConverters;
+
+using System.Globalization;
 
 namespace NetArch.Template.Infrastructure;
 
 public static class SerilogExtensions
 {
-    /// <summary>
-    /// Configura o bootstrap logger do Serilog
-    /// </summary>
-    /// <returns>ILogger configurado para bootstrap</returns>
     public static ILogger CreateBootstrapLogger()
     {
         return new LoggerConfiguration()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .Enrich.FromLogContext()
-            .WriteTo.Console()
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
             .CreateBootstrapLogger();
     }
 
-    /// <summary>
-    /// Adiciona e configura o Serilog no pipeline do ASP.NET Core
-    /// </summary>
-    /// <param name="services">IServiceCollection para adicionar o Serilog</param>
-    /// <param name="configuration">Configuração da aplicação</param>
-    /// <remarks>
-    /// Opções de configuração disponíveis em appsettings.json:
-    /// - Logging:Providers:UseSeq (bool): Habilita ou desabilita o Seq (sempre desabilitado em produção)
-    /// - Logging:Providers:SeqUrl (string): URL do servidor Seq (padrão: http://seq:5341)
-    /// - Serilog:WriteTo:ApplicationInsights:Args:connectionString: String de conexão do Application Insights
-    /// - Serilog: Configurações padrão do Serilog
-    /// 
-    /// O sink do Seq é sempre desabilitado em ambiente de produção, independentemente 
-    /// da configuração em appsettings.json.
-    /// </remarks>
     public static void AddSerilogConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        // Configura Application Insights (padrão via configuração)
-        services.AddApplicationInsightsTelemetry();
+        var useApplicationInsights = configuration.GetValue<bool>("Logging:Providers:UseApplicationInsights", true);
+        var useSeq = configuration.GetValue<bool>("Logging:Providers:UseSeq", true);
+        var seqUrl = configuration.GetValue<string>("Logging:Providers:SeqUrl");
 
-        services.AddSerilog((serviceProvider, loggerConfiguration) =>
+        if (useSeq && string.IsNullOrWhiteSpace(seqUrl))
         {
-            // Configuração básica e leitura da configuração existente
-            var logConfig = loggerConfiguration
-                .ReadFrom.Configuration(configuration)
-                .ReadFrom.Services(serviceProvider);
+            throw new ArgumentException("SeqUrl cannot be null or empty when UseSeq is enabled.");
+        }
 
-            // Verifica o ambiente atual
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            var isProdEnvironment = environment.Equals("Production", StringComparison.OrdinalIgnoreCase);
+        if (useApplicationInsights)
+        {
+            services.AddApplicationInsightsTelemetry();
+        }
 
-            // Determina se o Seq deve ser habilitado
-            bool useSeq;
-            if (isProdEnvironment)
-            {
-                // Em produção, o Seq está sempre desabilitado
-                useSeq = false;
-            }
-            else
-            {
-                // Em ambientes não-produção, usa a configuração ou habilita por padrão
-                useSeq = configuration.GetSection("Logging:Providers")
-                    .GetValue<bool>("UseSeq", true);
-            }
+        services.AddSerilog((_, loggerConfiguration) =>
+        {
+            loggerConfiguration
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .Enrich.WithThreadId()
+                .Destructure.ToMaximumDepth(4)
+                .Destructure.ToMaximumStringLength(100)
+                .Destructure.ToMaximumCollectionCount(10)
+                .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture);
 
             if (useSeq)
             {
-                // Obter a URL do servidor Seq da configuração
-                var seqUrl = configuration.GetSection("Logging:Providers")
-                    .GetValue<string>("SeqUrl") ?? "http://seq:5341";
-
-                // Adiciona o Seq com configurações robustas para evitar bloqueios se estiver indisponível
-                logConfig.WriteTo.Seq(
-                    serverUrl: seqUrl,
+                string nonNullSeqUrl = seqUrl ?? throw new InvalidOperationException("SeqUrl should not be null at this point");
+                loggerConfiguration.WriteTo.Seq(
+                    serverUrl: nonNullSeqUrl,
                     batchPostingLimit: 50,
-                    period: TimeSpan.FromSeconds(2)
+                    period: TimeSpan.FromSeconds(2),
+                    formatProvider: CultureInfo.InvariantCulture
                 );
+            }
+
+            if (useApplicationInsights)
+            {
+                var connectionString = configuration.GetSection("Serilog:WriteTo")
+                    .GetChildren()
+                    .FirstOrDefault(x => x.GetValue<string>("Name") == "ApplicationInsights")?
+                    .GetSection("Args")?
+                    .GetValue<string>("connectionString");
+
+                if (!string.IsNullOrWhiteSpace(connectionString) && !connectionString.Contains("{INSTRUMENTATION_KEY}", StringComparison.Ordinal))
+                {
+                    loggerConfiguration.WriteTo.ApplicationInsights(
+                        connectionString: connectionString,
+                        telemetryConverter: new TraceTelemetryConverter()
+                    );
+                }
             }
         });
 
         Serilog.Debugging.SelfLog.Enable(Console.Error);
     }
 
-    /// <summary>
-    /// Configura o middleware de registro de requisições do Serilog
-    /// </summary>
-    /// <param name="app">WebApplication para configurar o middleware</param>
     public static void UseSerilogRequestLoggingConfiguration(this WebApplication app)
     {
         app.UseSerilogRequestLogging();

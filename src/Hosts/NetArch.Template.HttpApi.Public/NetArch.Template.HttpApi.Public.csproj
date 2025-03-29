@@ -14,4 +14,10 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure\NetArch.Template.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\Presentation\NetArch.Template.HttpApi\NetArch.Template.HttpApi.csproj" />
+	</ItemGroup>
+
 </Project>
