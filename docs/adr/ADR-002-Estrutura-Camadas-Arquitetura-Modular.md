@@ -39,13 +39,9 @@ NetArch.Template/
 │
 │   ├── Presentation/
 │   │   ├── NetArch.Template.HttpApi/
-│   │   └── NetArch.Template.Grpc/
 │
 │   ├── Hosts/
 │   │   ├── NetArch.Template.HttpApi.Public/
-│   │   ├── NetArch.Template.Worker.Processor/
-│   │   └── NetArch.Template.Grpc.Host/
-│
 │   └── Tools/
 │       └── NetArch.Template.DbMigrator/
 │
@@ -79,7 +75,7 @@ A estrutura foi definida considerando os seguintes princípios:
 - `Infrastructure`: depende de `Infrastructure.Abstractions`, `Domain`, `Domain.Shared`, `Application.Contracts`.  
 - `Persistence.EntityFrameworkCore`: depende de `Domain`, `Domain.Shared`.  
 - `Persistence.DataAccess`: depende de `Domain`, `Domain.Shared`.  
-- `Presentation` (HttpApi, Grpc): depende de `Application`, `Application.Contracts`.  
+- `Presentation` (HttpApi): depende de `Application`, `Application.Contracts`.  
 - `Hosts`: depende de `Presentation`, `Infrastructure`, `Persistence`.  
 - `Tools`: pode depender de `Persistence`, `Infrastructure`, `Application`, conforme necessidade.  
 - `Tests`: dependem das respectivas camadas testadas e de `TestBase`.

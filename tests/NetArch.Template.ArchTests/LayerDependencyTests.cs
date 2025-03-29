@@ -1,82 +1,35 @@
-﻿using ArchUnitNET.Fluent;
+﻿using ArchUnitNET.Domain;
+using ArchUnitNET.Fluent;
 using ArchUnitNET.xUnit;
+using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace NetArch.Template.ArchTests
 {
     /// <summary>
-    /// Testes que verificam as regras de dependência entre camadas da arquitetura
+    /// Testes que verificam as regras de dependência entre camadas da arquitetura conforme o ADR
     /// </summary>
     public class LayerDependencyTests : BaseArchitectureTest
     {
         /// <summary>
-        /// Verifica se a camada de Domain não possui dependências em outras camadas.
-        /// O Domain deve depender apenas de Domain.Shared e não deve depender de
-        /// nenhuma outra camada para manter a integridade da arquitetura limpa.
-        /// </summary>
-        [Fact]
-        public void Domain_Should_Not_Have_Dependencies_On_Other_Layers()
-        {
-            IArchRule rule = Types()
-                .That()
-                .Are(DomainLayer)
-                .Should()
-                .NotDependOnAny(
-                    Types()
-                        .That()
-                        .Are(ApplicationContractsLayer)
-                        .Or()
-                        .Are(ApplicationLayer)
-                        .Or()
-                        .Are(InfrastructureAbstractionsLayer)
-                        .Or()
-                        .Are(InfrastructureLayer)
-                        .Or()
-                        .Are(PersistenceEfCoreLayer)
-                        .Or()
-                        .Are(PersistenceDataAccessLayer)
-                        .Or()
-                        .Are(HttpApiLayer)
-                        .Or()
-                        .Are(HttpApiPublicLayer)
-                )
-                .Because("Domain não deve depender de nenhuma outra camada exceto Domain.Shared");
-
-            rule.Check(Architecture);
-        }
-
-        /// <summary>
         /// Verifica se a camada Domain.Shared não depende de nenhuma outra camada.
-        /// O Domain.Shared deve ser totalmente independente, contendo apenas tipos
-        /// fundamentais como enums, valores de objeto e constantes reutilizadas por toda a solução.
         /// </summary>
         [Fact]
         public void Domain_Shared_Should_Not_Depend_On_Any_Layer()
         {
+            // Domain.Shared deve depender apenas de si mesmo e bibliotecas padrão
             IArchRule rule = Types()
                 .That()
-                .Are(DomainSharedLayer)
+                .ResideInNamespace(DomainSharedNamespace, true)
                 .Should()
-                .NotDependOnAny(
+                .OnlyDependOn(
                     Types()
                         .That()
-                        .Are(DomainLayer)
+                        .ResideInNamespace(DomainSharedNamespace, true)
                         .Or()
-                        .Are(ApplicationContractsLayer)
+                        .ResideInNamespace("System", true)
                         .Or()
-                        .Are(ApplicationLayer)
-                        .Or()
-                        .Are(InfrastructureAbstractionsLayer)
-                        .Or()
-                        .Are(InfrastructureLayer)
-                        .Or()
-                        .Are(PersistenceEfCoreLayer)
-                        .Or()
-                        .Are(PersistenceDataAccessLayer)
-                        .Or()
-                        .Are(HttpApiLayer)
-                        .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace("Microsoft", true)
                 )
                 .Because("Domain.Shared deve ser totalmente independente das outras camadas");
 
@@ -84,191 +37,216 @@ namespace NetArch.Template.ArchTests
         }
 
         /// <summary>
-        /// Verifica se a camada Infrastructure.Abstractions não depende das outras camadas da aplicação.
-        /// Infrastructure.Abstractions pode depender apenas de Domain.Shared.
+        /// Verifica se a camada Domain depende apenas de Domain.Shared.
         /// </summary>
         [Fact]
-        public void Infrastructure_Abstractions_Should_Only_Depend_On_Domain_Shared()
+        public void Domain_Should_Only_Depend_On_Domain_Shared()
         {
+            // Domain deve depender apenas de Domain.Shared
             IArchRule rule = Types()
                 .That()
-                .Are(InfrastructureAbstractionsLayer)
+                .ResideInNamespace(DomainNamespace, true)
                 .Should()
                 .NotDependOnAny(
                     Types()
                         .That()
-                        .Are(DomainLayer)
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(ApplicationContractsLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(ApplicationLayer)
+                        .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
                         .Or()
-                        .Are(InfrastructureLayer)
+                        .ResideInNamespace(InfrastructureNamespace, true)
                         .Or()
-                        .Are(PersistenceEfCoreLayer)
+                        .ResideInNamespace(PersistenceEfCoreNamespace, true)
                         .Or()
-                        .Are(PersistenceDataAccessLayer)
+                        .ResideInNamespace(PersistenceDataAccessNamespace, true)
                         .Or()
-                        .Are(HttpApiLayer)
+                        .ResideInNamespace(HttpApiNamespace, true)
                         .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace(HttpApiPublicNamespace, true)
                 )
-                .Because(
-                    "Infrastructure.Abstractions só deve depender de Domain.Shared e bibliotecas externas"
-                );
+                .Because("Domain deve depender apenas de Domain.Shared");
 
             rule.Check(Architecture);
         }
 
         /// <summary>
         /// Verifica se a camada Application.Contracts depende apenas de Domain.Shared.
-        /// Application.Contracts define as interfaces públicas da aplicação e deve depender
-        /// apenas de Domain.Shared para manter baixo acoplamento e facilitar testes.
         /// </summary>
         [Fact]
         public void Application_Contracts_Should_Only_Depend_On_Domain_Shared()
         {
+            // Verifica se Application.Contracts depende somente de si mesma e Domain.Shared,
+            // mas não de outras camadas
             IArchRule rule = Types()
                 .That()
-                .Are(ApplicationContractsLayer)
+                .ResideInNamespace(ApplicationContractsNamespace, true)
                 .Should()
-                .NotDependOnAny(
+                .OnlyDependOn(
                     Types()
                         .That()
-                        .Are(DomainLayer)
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(ApplicationLayer)
+                        .ResideInNamespace(DomainSharedNamespace, true)
                         .Or()
-                        .Are(InfrastructureAbstractionsLayer)
+                        .ResideInNamespace("System", true)
                         .Or()
-                        .Are(InfrastructureLayer)
-                        .Or()
-                        .Are(PersistenceEfCoreLayer)
-                        .Or()
-                        .Are(PersistenceDataAccessLayer)
-                        .Or()
-                        .Are(HttpApiLayer)
-                        .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace("Microsoft", true)
                 )
-                .Because(
-                    "Application.Contracts só deve depender de Domain.Shared e bibliotecas externas"
-                );
+                .Because("Application.Contracts deve depender apenas de Domain.Shared");
 
             rule.Check(Architecture);
         }
 
         /// <summary>
-        /// Verifica se a camada Application depende apenas das camadas permitidas.
+        /// Verifica se a camada Application depende apenas de Domain, Domain.Shared, Application.Contracts
+        /// e Infrastructure.Abstractions.
         /// </summary>
         [Fact]
         public void Application_Should_Only_Depend_On_Allowed_Layers()
         {
+            // Verifica se Application depende somente de camadas permitidas
             IArchRule rule = Types()
                 .That()
-                .Are(ApplicationLayer)
+                .ResideInNamespace(ApplicationNamespace, true)
                 .Should()
-                .NotDependOnAny(
+                .OnlyDependOn(
                     Types()
                         .That()
-                        .Are(InfrastructureLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(InfrastructureAbstractionsLayer)
+                        .ResideInNamespace(DomainNamespace, true)
                         .Or()
-                        .Are(PersistenceEfCoreLayer)
+                        .ResideInNamespace(DomainSharedNamespace, true)
                         .Or()
-                        .Are(PersistenceDataAccessLayer)
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(HttpApiLayer)
+                        .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
                         .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace("System", true)
+                        .Or()
+                        .ResideInNamespace("Microsoft", true)
                 )
                 .Because(
-                    "Application só deve depender de Domain, Domain.Shared e Application.Contracts"
+                    "Application deve depender apenas de Domain, Domain.Shared, Application.Contracts e Infrastructure.Abstractions"
                 );
 
             rule.Check(Architecture);
         }
 
         /// <summary>
-        /// Verifica se a camada Infrastructure depende apenas de camadas permitidas.
+        /// Verifica se a camada Infrastructure.Abstractions depende apenas de Domain.Shared.
         /// </summary>
         [Fact]
-        public void Infrastructure_Should_Not_Depend_On_Forbidden_Layers()
+        public void Infrastructure_Abstractions_Should_Only_Depend_On_Domain_Shared()
         {
+            // Infrastructure.Abstractions deve depender apenas de si mesma e Domain.Shared
             IArchRule rule = Types()
                 .That()
-                .Are(InfrastructureLayer)
+                .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
                 .Should()
-                .NotDependOnAny(
+                .OnlyDependOn(
                     Types()
                         .That()
-                        .Are(ApplicationLayer)
+                        .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
                         .Or()
-                        .Are(PersistenceEfCoreLayer)
+                        .ResideInNamespace(DomainSharedNamespace, true)
                         .Or()
-                        .Are(PersistenceDataAccessLayer)
+                        .ResideInNamespace("System", true)
                         .Or()
-                        .Are(HttpApiLayer)
-                        .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace("Microsoft", true)
                 )
-                .Because("Infrastructure não deve depender de Application, Persistence ou HttpApi");
+                .Because("Infrastructure.Abstractions deve depender apenas de Domain.Shared");
 
             rule.Check(Architecture);
         }
 
         /// <summary>
-        /// Verifica se as camadas de persistência dependem apenas do domínio.
+        /// Verifica se a camada Infrastructure depende apenas de camadas permitidas:
+        /// Infrastructure.Abstractions, Domain, Domain.Shared e Application.Contracts.
         /// </summary>
         [Fact]
-        public void Persistence_Layers_Should_Only_Depend_On_Domain()
+        public void Infrastructure_Should_Only_Depend_On_Allowed_Layers()
         {
-            IArchRule efCoreRule = Types()
+            // Infrastructure deve depender apenas de Infrastructure.Abstractions, Domain, Domain.Shared, Application.Contracts
+            IArchRule rule = Types()
                 .That()
-                .Are(PersistenceEfCoreLayer)
+                .ResideInNamespace(InfrastructureNamespace, true)
                 .Should()
                 .NotDependOnAny(
                     Types()
                         .That()
-                        .Are(ApplicationLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(ApplicationContractsLayer)
+                        .ResideInNamespace(PersistenceEfCoreNamespace, true)
                         .Or()
-                        .Are(InfrastructureLayer)
+                        .ResideInNamespace(PersistenceDataAccessNamespace, true)
                         .Or()
-                        .Are(InfrastructureAbstractionsLayer)
+                        .ResideInNamespace(HttpApiNamespace, true)
                         .Or()
-                        .Are(HttpApiLayer)
+                        .ResideInNamespace(HttpApiPublicNamespace, true)
+                )
+                .Because(
+                    "Infrastructure deve depender apenas de Infrastructure.Abstractions, Domain, Domain.Shared e Application.Contracts"
+                );
+
+            rule.Check(Architecture);
+        }
+
+        /// <summary>
+        /// Verifica se as camadas de persistência dependem apenas de Domain e Domain.Shared.
+        /// </summary>
+        [Fact]
+        public void Persistence_Layers_Should_Only_Depend_On_Domain_Layers()
+        {
+            // Persistence.EntityFrameworkCore deve depender apenas de Domain e Domain.Shared
+            IArchRule efCoreRule = Types()
+                .That()
+                .ResideInNamespace(PersistenceEfCoreNamespace, true)
+                .Should()
+                .NotDependOnAny(
+                    Types()
+                        .That()
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(PersistenceDataAccessLayer)
+                        .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
+                        .Or()
+                        .ResideInNamespace(InfrastructureNamespace, true)
+                        .Or()
+                        .ResideInNamespace(PersistenceDataAccessNamespace, true)
+                        .Or()
+                        .ResideInNamespace(HttpApiNamespace, true)
+                        .Or()
+                        .ResideInNamespace(HttpApiPublicNamespace, true)
                 )
                 .Because(
                     "Persistence.EntityFrameworkCore deve depender apenas de Domain e Domain.Shared"
                 );
 
+            // Persistence.DataAccess deve depender apenas de Domain e Domain.Shared
             IArchRule dataAccessRule = Types()
                 .That()
-                .Are(PersistenceDataAccessLayer)
+                .ResideInNamespace(PersistenceDataAccessNamespace, true)
                 .Should()
                 .NotDependOnAny(
                     Types()
                         .That()
-                        .Are(ApplicationLayer)
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(ApplicationContractsLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(InfrastructureLayer)
+                        .ResideInNamespace(InfrastructureAbstractionsNamespace, true)
                         .Or()
-                        .Are(InfrastructureAbstractionsLayer)
+                        .ResideInNamespace(InfrastructureNamespace, true)
                         .Or()
-                        .Are(HttpApiLayer)
+                        .ResideInNamespace(PersistenceEfCoreNamespace, true)
                         .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace(HttpApiNamespace, true)
                         .Or()
-                        .Are(PersistenceEfCoreLayer)
+                        .ResideInNamespace(HttpApiPublicNamespace, true)
                 )
                 .Because("Persistence.DataAccess deve depender apenas de Domain e Domain.Shared");
 
@@ -277,29 +255,32 @@ namespace NetArch.Template.ArchTests
         }
 
         /// <summary>
-        /// Verifica se a camada HttpApi depende apenas das camadas permitidas.
+        /// Verifica se a camada HttpApi depende apenas de Application, Application.Contracts e Domain.Shared.
         /// </summary>
         [Fact]
-        public void HttpApi_Should_Not_Depend_On_Forbidden_Layers()
+        public void HttpApi_Should_Only_Depend_On_Allowed_Layers()
         {
+            // HttpApi deve depender apenas de camadas permitidas
             IArchRule rule = Types()
                 .That()
-                .Are(HttpApiLayer)
+                .ResideInNamespace(HttpApiNamespace, true)
+                .And()
+                .DoNotResideInNamespace(HttpApiPublicNamespace, true) // Excluir HttpApi.Public
                 .Should()
-                .NotDependOnAny(
+                .OnlyDependOn(
                     Types()
                         .That()
-                        .Are(DomainLayer)
+                        .ResideInNamespace(HttpApiNamespace, true)
                         .Or()
-                        .Are(InfrastructureLayer)
+                        .ResideInNamespace(ApplicationNamespace, true)
                         .Or()
-                        .Are(InfrastructureAbstractionsLayer)
+                        .ResideInNamespace(ApplicationContractsNamespace, true)
                         .Or()
-                        .Are(PersistenceEfCoreLayer)
+                        .ResideInNamespace(DomainSharedNamespace, true)
                         .Or()
-                        .Are(PersistenceDataAccessLayer)
+                        .ResideInNamespace("System", true)
                         .Or()
-                        .Are(HttpApiPublicLayer)
+                        .ResideInNamespace("Microsoft", true)
                 )
                 .Because(
                     "HttpApi deve depender apenas de Application, Application.Contracts e Domain.Shared"
@@ -314,11 +295,12 @@ namespace NetArch.Template.ArchTests
         [Fact]
         public void HttpApi_Public_Should_Not_Depend_Directly_On_Domain()
         {
+            // HttpApi.Public não deve depender diretamente do Domain
             IArchRule rule = Types()
                 .That()
-                .Are(HttpApiPublicLayer)
+                .ResideInNamespace(HttpApiPublicNamespace, true)
                 .Should()
-                .NotDependOnAny(DomainLayer)
+                .NotDependOnAny(Types().That().ResideInNamespace(DomainNamespace, true))
                 .Because("HttpApi.Public não deve depender diretamente do Domain");
 
             rule.Check(Architecture);
