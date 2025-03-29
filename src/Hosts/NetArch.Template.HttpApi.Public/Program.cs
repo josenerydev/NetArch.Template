@@ -14,6 +14,7 @@ try
     builder.Services.AddApplicationServices();
     builder.Services.AddPersistenceServices();
     builder.Services.AddInMemoryPersistence();
+    builder.Services.AddValidationServices();
 
     builder.Services.AddSerilogConfiguration(builder.Configuration);
     builder.Services.AddControllers()
