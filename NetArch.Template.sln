@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetArch.Template.ArchTests", "tests\NetArch.Template.ArchTests\NetArch.Template.ArchTests.csproj", "{5118D102-9C01-4560-A1A2-9A9E6A099B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5118D102-9C01-4560-A1A2-9A9E6A099B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5118D102-9C01-4560-A1A2-9A9E6A099B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5118D102-9C01-4560-A1A2-9A9E6A099B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5118D102-9C01-4560-A1A2-9A9E6A099B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{5C306C7D-1E71-496F-966E-05E53F7B25C5} = {49AC2157-2E5F-4831-BC34-2F03573669B2}
 		{3271BFE8-5B32-4612-8250-560449DCB88B} = {49AC2157-2E5F-4831-BC34-2F03573669B2}
 		{B6D30586-86C3-47DE-911F-BBD531B2277A} = {49AC2157-2E5F-4831-BC34-2F03573669B2}
+		{5118D102-9C01-4560-A1A2-9A9E6A099B75} = {49AC2157-2E5F-4831-BC34-2F03573669B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D55D3E35-6DAC-40DD-8E6B-3352AD718CF8}
