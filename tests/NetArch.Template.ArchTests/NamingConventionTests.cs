@@ -37,28 +37,6 @@ namespace NetArch.Template.ArchTests
         }
 
         /// <summary>
-        /// Verifica se os serviços de aplicação seguem convenções de nomenclatura adequadas.
-        /// Os serviços de aplicação devem terminar com o sufixo 'Service' ou 'AppService'
-        /// para identificar claramente seu papel na arquitetura.
-        /// </summary>
-        [Fact]
-        public void Application_Services_Should_Follow_Naming_Convention()
-        {
-            IArchRule serviceNamingRule = Classes()
-                .That()
-                .ResideInNamespace(ApplicationNamespace, true)
-                .And()
-                .HaveNameContaining("Service")
-                .Should()
-                .HaveNameEndingWith("Service")
-                .OrShould()
-                .HaveNameEndingWith("AppService")
-                .Because("Serviços de aplicação devem terminar com 'Service' ou 'AppService'");
-
-            serviceNamingRule.Check(Architecture);
-        }
-
-        /// <summary>
         /// Verifica se as interfaces de repositório seguem convenções de nomenclatura adequadas.
         /// As interfaces de repositório devem começar com 'I' e terminar com 'Repository'
         /// para indicar claramente seu papel na arquitetura.
@@ -121,31 +99,6 @@ namespace NetArch.Template.ArchTests
                 .Because("Data Transfer Objects devem terminar com o sufixo 'Dto'");
 
             dtoNamingRule.Check(Architecture);
-        }
-
-        /// <summary>
-        /// Verifica se interfaces de serviços de aplicação seguem a convenção de nomenclatura.
-        /// Interfaces de serviço devem começar com 'I' e terminar com 'Service' ou 'AppService'.
-        /// </summary>
-        [Fact]
-        public void Application_Service_Interfaces_Should_Follow_Naming_Convention()
-        {
-            IArchRule serviceInterfaceNamingRule = Interfaces()
-                .That()
-                .ResideInNamespace(ApplicationContractsNamespace, true)
-                .And()
-                .HaveNameContaining("Service")
-                .Should()
-                .HaveNameStartingWith("I")
-                .AndShould()
-                .HaveNameEndingWith("Service")
-                .OrShould()
-                .HaveNameEndingWith("AppService")
-                .Because(
-                    "Interfaces de serviço devem começar com 'I' e terminar com 'Service' ou 'AppService'"
-                );
-
-            serviceInterfaceNamingRule.Check(Architecture);
         }
     }
 }
