@@ -10,7 +10,7 @@ try
     Log.Information("Starting web application");
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddMappingServices();
+    builder.Services.AddMapster();
     builder.Services.AddApplicationServices();
     builder.Services.AddPersistenceServices();
     builder.Services.AddInMemoryPersistence();

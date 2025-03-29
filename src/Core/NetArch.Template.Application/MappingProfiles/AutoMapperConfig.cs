@@ -6,9 +6,9 @@ using NetArch.Template.Domain.Shared.Enums;
 
 namespace NetArch.Template.Application.MappingProfiles;
 
-public class ApplicationMappingProfile : Profile
+public class AutoMapperConfig : Profile
 {
-    public ApplicationMappingProfile()
+    public AutoMapperConfig()
     {
         // Customer -> CustomerDto
         CreateMap<Customer, CustomerDto>()
