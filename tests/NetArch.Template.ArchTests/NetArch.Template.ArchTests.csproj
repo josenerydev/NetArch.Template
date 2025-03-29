@@ -24,6 +24,7 @@
       <ProjectReference Include="..\..\src\Hosts\NetArch.Template.HttpApi.Public\NetArch.Template.HttpApi.Public.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\NetArch.Template.Infrastructure\NetArch.Template.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Persistence\NetArch.Template.Persistence.DataAccess\NetArch.Template.Persistence.DataAccess.csproj" />
       <ProjectReference Include="..\..\src\Persistence\NetArch.Template.Persistence.EntityFrameworkCore\NetArch.Template.Persistence.EntityFrameworkCore.csproj" />
       <ProjectReference Include="..\..\src\Presentation\NetArch.Template.HttpApi\NetArch.Template.HttpApi.csproj" />
     </ItemGroup>
