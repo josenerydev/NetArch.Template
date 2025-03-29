@@ -1,9 +1,10 @@
-using NetArch.Template.HttpApi;
 using NetArch.Template.HttpApi.Extensions;
 using NetArch.Template.Infrastructure.Extensions;
 using Serilog;
+using AssemblyReference = NetArch.Template.HttpApi.AssemblyReference;
 
 Log.Logger = SerilogConfigurationExtensions.CreateBootstrapLogger();
+
 try
 {
     Log.Information("Starting web application");
