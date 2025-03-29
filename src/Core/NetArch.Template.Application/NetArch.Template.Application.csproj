@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Application.Contracts\NetArch.Template.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Domain.Shared\NetArch.Template.Domain.Shared.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Domain\NetArch.Template.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
