@@ -3,7 +3,7 @@ using NetArch.Template.Infrastructure;
 
 using Serilog;
 
-Log.Logger = SerilogExtensions.CreateBootstrapLogger();
+Log.Logger = SerilogConfigurationExtensions.CreateBootstrapLogger();
 
 try
 {

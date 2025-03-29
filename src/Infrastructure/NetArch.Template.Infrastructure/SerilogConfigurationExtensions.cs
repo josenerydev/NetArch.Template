@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace NetArch.Template.Infrastructure;
 
-public static class SerilogExtensions
+public static class SerilogConfigurationExtensions
 {
     public static ILogger CreateBootstrapLogger()
     {
