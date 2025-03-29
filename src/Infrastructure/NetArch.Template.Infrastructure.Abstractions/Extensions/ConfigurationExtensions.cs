@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace NetArch.Template.Infrastructure.Abstractions
+using NetArch.Template.Infrastructure.Abstractions.Utils;
+
+namespace NetArch.Template.Infrastructure.Abstractions.Extensions
 {
     public static class ConfigurationExtensions
     {

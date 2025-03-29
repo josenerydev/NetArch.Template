@@ -1,6 +1,6 @@
 using NetArch.Template.HttpApi;
 using NetArch.Template.HttpApi.Extensions;
-using NetArch.Template.Infrastructure;
+using NetArch.Template.Infrastructure.Extensions;
 
 using Serilog;
 

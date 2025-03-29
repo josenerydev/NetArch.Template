@@ -1,6 +1,6 @@
-﻿using NetArch.Template.Infrastructure.Abstractions;
+﻿using NetArch.Template.Infrastructure.Abstractions.Utils;
 
-namespace NetArch.Template.Infrastructure
+namespace NetArch.Template.Infrastructure.Utils
 {
     public class DateTimeProvider : IDateTimeProvider
     {

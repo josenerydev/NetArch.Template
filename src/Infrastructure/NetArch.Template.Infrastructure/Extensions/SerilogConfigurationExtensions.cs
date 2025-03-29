@@ -8,7 +8,7 @@ using Serilog.Sinks.ApplicationInsights.TelemetryConverters;
 
 using System.Globalization;
 
-namespace NetArch.Template.Infrastructure;
+namespace NetArch.Template.Infrastructure.Extensions;
 
 public static class SerilogConfigurationExtensions
 {
@@ -75,8 +75,8 @@ public static class SerilogConfigurationExtensions
 
     private static (bool useApplicationInsights, bool useSeq, string? seqUrl) GetProviderSettings(IConfiguration configuration)
     {
-        var useApplicationInsights = configuration.GetValue<bool>("Logging:Providers:UseApplicationInsights", false);
-        var useSeq = configuration.GetValue<bool>("Logging:Providers:UseSeq", false);
+        var useApplicationInsights = configuration.GetValue("Logging:Providers:UseApplicationInsights", false);
+        var useSeq = configuration.GetValue("Logging:Providers:UseSeq", false);
         var seqUrl = configuration.GetValue<string>("Logging:Providers:SeqUrl");
 
         if (useSeq && string.IsNullOrWhiteSpace(seqUrl))

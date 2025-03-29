@@ -1,4 +1,4 @@
-﻿namespace NetArch.Template.Infrastructure.Abstractions
+﻿namespace NetArch.Template.Infrastructure.Abstractions.Utils
 {
     public interface IDateTimeProvider
     {
