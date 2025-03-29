@@ -1,0 +1,39 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="AsyncFixer" Version="1.6.0" />
+    <PackageVersion Include="AutoMapper" Version="14.0.0" />
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="Mapster" Version="7.4.0" />
+    <PackageVersion Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageVersion Include="Oracle.EntityFrameworkCore" Version="9.23.60" />
+    <PackageVersion Include="SecurityCodeScan.VS2019" Version="5.6.7" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Enrichers.Context" Version="4.6.5" />
+    <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageVersion Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+    <PackageVersion Include="SerilogAnalyzer" Version="0.15.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.7.0.110445" />
+    <PackageVersion Include="CSharpier.MsBuild" Version="0.26.7" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="xunit" Version="2.5.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.3" />
+  </ItemGroup>
+</Project>

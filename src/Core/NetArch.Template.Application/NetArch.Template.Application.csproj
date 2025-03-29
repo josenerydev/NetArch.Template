@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncFixer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Mapster" />
+    <PackageReference Include="SecurityCodeScan.VS2019">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SerilogAnalyzer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Application.Contracts\NetArch.Template.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Domain.Shared\NetArch.Template.Domain.Shared.csproj" />
+    <ProjectReference Include="..\NetArch.Template.Domain\NetArch.Template.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

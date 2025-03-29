@@ -1,0 +1,13 @@
+services:
+  netarch.template.httpapi.public:
+    image: ${DOCKER_REGISTRY-}netarchtemplatehttpapipublic
+    build:
+      context: .
+      dockerfile: src/Hosts/NetArch.Template.HttpApi.Public/Dockerfile
+
+  seq:
+    image: datalust/seq:latest
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:80"

@@ -1,0 +1,13 @@
+<Project>
+    <Target Name="RunCSharpier"
+            BeforeTargets="BeforeBuild"
+            Condition="'$(BuildingInsideVisualStudio)' == 'true' and Exists('$(MSBuildProjectDirectory)/.config/dotnet-tools.json')">
+        <Exec Command="dotnet tool restore"
+              WorkingDirectory="$(MSBuildProjectDirectory)"
+              IgnoreExitCode="false" />
+
+        <Exec Command="dotnet tool run dotnet-csharpier . --write"
+              WorkingDirectory="$(MSBuildProjectDirectory)"
+              IgnoreExitCode="true" />
+    </Target>
+</Project>

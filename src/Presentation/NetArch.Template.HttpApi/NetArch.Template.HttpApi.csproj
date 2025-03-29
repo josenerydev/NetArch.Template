@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NetArch.Template.Application\NetArch.Template.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure.Abstractions\NetArch.Template.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\NetArch.Template.Infrastructure\NetArch.Template.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Persistence\NetArch.Template.Persistence.EntityFrameworkCore\NetArch.Template.Persistence.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>
