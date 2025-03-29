@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 using NetArch.Template.Application.Contracts.DTOs;
 using NetArch.Template.Domain.Entities;
 using NetArch.Template.Domain.Shared.Enums;
@@ -12,12 +11,15 @@ public class AutoMapperConfig : Profile
     {
         // Customer -> CustomerDto
         CreateMap<Customer, CustomerDto>()
-            .ForMember(dest => dest.FullName, opt =>
-                opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
-            .ForMember(dest => dest.Age, opt =>
-                opt.MapFrom(src => CalculateAge(src.BirthDate)))
-            .ForMember(dest => dest.IsActive, opt =>
-                opt.MapFrom(src => src.Status == CustomerStatus.Active));
+            .ForMember(
+                dest => dest.FullName,
+                opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}")
+            )
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => CalculateAge(src.BirthDate)))
+            .ForMember(
+                dest => dest.IsActive,
+                opt => opt.MapFrom(src => src.Status == CustomerStatus.Active)
+            );
 
         // CustomerCreateDto -> Customer
         CreateMap<CustomerCreateDto, Customer>()
@@ -40,7 +42,8 @@ public class AutoMapperConfig : Profile
     {
         var today = DateTime.Today;
         var age = today.Year - birthDate.Year;
-        if (birthDate.Date > today.AddYears(-age)) age--;
+        if (birthDate.Date > today.AddYears(-age))
+            age--;
         return age;
     }
 }

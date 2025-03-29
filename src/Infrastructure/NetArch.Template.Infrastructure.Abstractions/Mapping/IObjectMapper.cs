@@ -6,4 +6,3 @@ public interface IObjectMapper
     TDestination Map<TDestination>(object source);
     void Map<TSource, TDestination>(TSource source, TDestination destination);
 }
-

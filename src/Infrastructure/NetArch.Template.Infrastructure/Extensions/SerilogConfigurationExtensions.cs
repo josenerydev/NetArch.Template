@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.ApplicationInsights.TelemetryConverters;
-
-using System.Globalization;
 
 namespace NetArch.Template.Infrastructure.Extensions;
 
@@ -21,7 +19,10 @@ public static class SerilogConfigurationExtensions
             .CreateBootstrapLogger();
     }
 
-    public static void AddSerilogConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static void AddSerilogConfiguration(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         try
         {
@@ -32,32 +33,34 @@ public static class SerilogConfigurationExtensions
                 services.AddApplicationInsightsTelemetry();
             }
 
-            services.AddSerilog((provider, loggerConfiguration) =>
-            {
-                // Setup base configuration
-                ConfigureBaseSettings(loggerConfiguration);
-
-                // Configure minimum level overrides
-                ConfigureLevelOverrides(loggerConfiguration, configuration);
-
-                // Configure destructurers
-                ConfigureDestructurers(loggerConfiguration);
-
-                // Add enrichers
-                ConfigureEnrichers(loggerConfiguration, configuration);
-
-                // Add Seq if enabled
-                if (useSeq && !string.IsNullOrWhiteSpace(seqUrl))
+            services.AddSerilog(
+                (provider, loggerConfiguration) =>
                 {
-                    ConfigureSeq(loggerConfiguration, seqUrl);
-                }
+                    // Setup base configuration
+                    ConfigureBaseSettings(loggerConfiguration);
 
-                // Add Application Insights if enabled
-                if (useApplicationInsights)
-                {
-                    ConfigureApplicationInsights(loggerConfiguration, configuration);
+                    // Configure minimum level overrides
+                    ConfigureLevelOverrides(loggerConfiguration, configuration);
+
+                    // Configure destructurers
+                    ConfigureDestructurers(loggerConfiguration);
+
+                    // Add enrichers
+                    ConfigureEnrichers(loggerConfiguration, configuration);
+
+                    // Add Seq if enabled
+                    if (useSeq && !string.IsNullOrWhiteSpace(seqUrl))
+                    {
+                        ConfigureSeq(loggerConfiguration, seqUrl);
+                    }
+
+                    // Add Application Insights if enabled
+                    if (useApplicationInsights)
+                    {
+                        ConfigureApplicationInsights(loggerConfiguration, configuration);
+                    }
                 }
-            });
+            );
 
             Serilog.Debugging.SelfLog.Enable(Console.Error);
         }
@@ -73,9 +76,14 @@ public static class SerilogConfigurationExtensions
         }
     }
 
-    private static (bool useApplicationInsights, bool useSeq, string? seqUrl) GetProviderSettings(IConfiguration configuration)
+    private static (bool useApplicationInsights, bool useSeq, string? seqUrl) GetProviderSettings(
+        IConfiguration configuration
+    )
     {
-        var useApplicationInsights = configuration.GetValue("Logging:Providers:UseApplicationInsights", false);
+        var useApplicationInsights = configuration.GetValue(
+            "Logging:Providers:UseApplicationInsights",
+            false
+        );
         var useSeq = configuration.GetValue("Logging:Providers:UseSeq", false);
         var seqUrl = configuration.GetValue<string>("Logging:Providers:SeqUrl");
 
@@ -95,7 +103,10 @@ public static class SerilogConfigurationExtensions
             .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture);
     }
 
-    private static void ConfigureLevelOverrides(LoggerConfiguration loggerConfiguration, IConfiguration configuration)
+    private static void ConfigureLevelOverrides(
+        LoggerConfiguration loggerConfiguration,
+        IConfiguration configuration
+    )
     {
         var minimumLevelOverrides = configuration.GetSection("Serilog:MinimumLevel:Override");
         foreach (var overrideConfig in minimumLevelOverrides.GetChildren())
@@ -116,9 +127,16 @@ public static class SerilogConfigurationExtensions
             .Destructure.ToMaximumCollectionCount(10);
     }
 
-    private static void ConfigureEnrichers(LoggerConfiguration loggerConfiguration, IConfiguration configuration)
+    private static void ConfigureEnrichers(
+        LoggerConfiguration loggerConfiguration,
+        IConfiguration configuration
+    )
     {
-        var enrichers = configuration.GetSection("Serilog:Enrich").GetChildren().Select(x => x.Value).ToArray();
+        var enrichers = configuration
+            .GetSection("Serilog:Enrich")
+            .GetChildren()
+            .Select(x => x.Value)
+            .ToArray();
 
         if (enrichers.Contains("WithMachineName"))
         {
@@ -146,7 +164,10 @@ public static class SerilogConfigurationExtensions
         );
     }
 
-    private static void ConfigureApplicationInsights(LoggerConfiguration loggerConfiguration, IConfiguration configuration)
+    private static void ConfigureApplicationInsights(
+        LoggerConfiguration loggerConfiguration,
+        IConfiguration configuration
+    )
     {
         var connectionString = GetAppInsightsConnectionString(configuration);
 
@@ -190,10 +211,17 @@ public static class SerilogConfigurationExtensions
 
     private static string? TryBuildConnectionStringFromConfig(IConfiguration configuration)
     {
-        var instrumentationKey = configuration.GetValue<string>("ApplicationInsights:InstrumentationKey");
-        var ingestionEndpoint = configuration.GetValue<string>("ApplicationInsights:IngestionEndpoint");
+        var instrumentationKey = configuration.GetValue<string>(
+            "ApplicationInsights:InstrumentationKey"
+        );
+        var ingestionEndpoint = configuration.GetValue<string>(
+            "ApplicationInsights:IngestionEndpoint"
+        );
 
-        if (string.IsNullOrWhiteSpace(instrumentationKey) || string.IsNullOrWhiteSpace(ingestionEndpoint))
+        if (
+            string.IsNullOrWhiteSpace(instrumentationKey)
+            || string.IsNullOrWhiteSpace(ingestionEndpoint)
+        )
         {
             return null;
         }
@@ -201,7 +229,8 @@ public static class SerilogConfigurationExtensions
         var liveEndpoint = configuration.GetValue<string>("ApplicationInsights:LiveEndpoint");
         var applicationId = configuration.GetValue<string>("ApplicationInsights:ApplicationId");
 
-        var connectionString = $"InstrumentationKey={instrumentationKey};IngestionEndpoint={ingestionEndpoint}";
+        var connectionString =
+            $"InstrumentationKey={instrumentationKey};IngestionEndpoint={ingestionEndpoint}";
 
         if (!string.IsNullOrWhiteSpace(liveEndpoint))
         {
@@ -218,7 +247,8 @@ public static class SerilogConfigurationExtensions
 
     private static string? TryGetConnectionStringFromSerilogConfig(IConfiguration configuration)
     {
-        var aiSink = configuration.GetSection("Serilog:WriteTo")
+        var aiSink = configuration
+            .GetSection("Serilog:WriteTo")
             .GetChildren()
             .FirstOrDefault(x => x.GetValue<string>("Name") == "ApplicationInsights");
 
@@ -228,9 +258,11 @@ public static class SerilogConfigurationExtensions
         }
 
         var rawConnString = aiSink.GetSection("Args").GetValue<string>("connectionString");
-        if (!string.IsNullOrWhiteSpace(rawConnString) &&
-            !rawConnString.Contains('{', StringComparison.Ordinal) &&
-            !rawConnString.Contains('}', StringComparison.Ordinal))
+        if (
+            !string.IsNullOrWhiteSpace(rawConnString)
+            && !rawConnString.Contains('{', StringComparison.Ordinal)
+            && !rawConnString.Contains('}', StringComparison.Ordinal)
+        )
         {
             return rawConnString;
         }

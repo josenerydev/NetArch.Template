@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using NetArch.Template.Domain.Entities;
 
 namespace NetArch.Template.Persistence.EntityFrameworkCore
@@ -9,9 +8,7 @@ namespace NetArch.Template.Persistence.EntityFrameworkCore
         public DbSet<Customer> Customers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

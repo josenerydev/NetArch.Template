@@ -1,7 +1,6 @@
 using NetArch.Template.HttpApi;
 using NetArch.Template.HttpApi.Extensions;
 using NetArch.Template.Infrastructure.Extensions;
-
 using Serilog;
 
 Log.Logger = SerilogConfigurationExtensions.CreateBootstrapLogger();
@@ -17,8 +16,7 @@ try
     builder.Services.AddValidationServices();
 
     builder.Services.AddSerilogConfiguration(builder.Configuration);
-    builder.Services.AddControllers()
-        .AddApplicationPart(AssemblyReference.PresentationAssembly);
+    builder.Services.AddControllers().AddApplicationPart(AssemblyReference.PresentationAssembly);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 

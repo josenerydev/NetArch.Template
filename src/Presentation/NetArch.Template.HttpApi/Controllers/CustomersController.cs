@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using NetArch.Template.Application.Contracts.DTOs;
 using NetArch.Template.Application.Contracts.Services;
 
@@ -44,7 +43,11 @@ namespace NetArch.Template.HttpApi.Controllers
         public async Task<IActionResult> Create([FromBody] CustomerCreateDto input)
         {
             var createdCustomer = await _customerService.CreateAsync(input);
-            return CreatedAtAction(nameof(GetById), new { id = createdCustomer.Id }, createdCustomer);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdCustomer.Id },
+                createdCustomer
+            );
         }
 
         [HttpPut("{id}")]

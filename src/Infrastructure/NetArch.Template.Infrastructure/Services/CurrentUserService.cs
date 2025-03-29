@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace NetArch.Template.Infrastructure.Services
 {
-    internal class CurrentUserService
-    {
-    }
+    internal class CurrentUserService { }
 }

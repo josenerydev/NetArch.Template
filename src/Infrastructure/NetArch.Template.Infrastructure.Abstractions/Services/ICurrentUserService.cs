@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace NetArch.Template.Infrastructure.Abstractions.Services
 {
-    internal interface ICurrentUserService
-    {
-    }
+    internal interface ICurrentUserService { }
 }

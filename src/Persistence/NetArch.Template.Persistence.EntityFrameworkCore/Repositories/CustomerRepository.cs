@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using NetArch.Template.Domain.Entities;
 using NetArch.Template.Domain.Repositories;
 using NetArch.Template.Domain.Shared.Enums;
@@ -27,8 +26,8 @@ namespace NetArch.Template.Persistence.EntityFrameworkCore.Repositories
 
         public async Task<IList<Customer>> GetActiveAsync()
         {
-            return await _dbContext.Customers
-                .Where(c => c.Status == CustomerStatus.Active)
+            return await _dbContext
+                .Customers.Where(c => c.Status == CustomerStatus.Active)
                 .ToListAsync();
         }
 

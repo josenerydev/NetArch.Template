@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-
 using NetArch.Template.Application.Contracts.DTOs;
 
 namespace NetArch.Template.Application.Validators

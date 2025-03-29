@@ -1,9 +1,6 @@
 ﻿using Mapster;
-
 using MapsterMapper;
-
 using Microsoft.Extensions.DependencyInjection;
-
 using NetArch.Template.Application.MappingProfiles;
 using NetArch.Template.Infrastructure.Abstractions.Mapping;
 using NetArch.Template.Infrastructure.Mapping;

@@ -11,9 +11,7 @@ public class CustomerService : ICustomerService
     private readonly ICustomerRepository _customerRepository;
     private readonly IObjectMapper _mapper;
 
-    public CustomerService(
-        ICustomerRepository customerRepository,
-        IObjectMapper mapper)
+    public CustomerService(ICustomerRepository customerRepository, IObjectMapper mapper)
     {
         _customerRepository = customerRepository;
         _mapper = mapper;

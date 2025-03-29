@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-
 using NetArch.Template.Application.Contracts.Services;
 using NetArch.Template.Application.Services;
 using NetArch.Template.Domain.Repositories;
