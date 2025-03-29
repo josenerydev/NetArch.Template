@@ -98,5 +98,29 @@ namespace NetArch.Template.ArchTests
 
             repositoriesOnlyInPersistenceRule.Check(Architecture);
         }
+
+        /// <summary>
+        /// Verifica se as interfaces de repositório seguem convenções de nomenclatura adequadas.
+        /// As interfaces de repositório devem começar com 'I' e terminar com 'Repository'
+        /// para indicar claramente seu papel na arquitetura.
+        /// </summary>
+        [Fact]
+        public void Repository_Interfaces_Should_Follow_Naming_Convention()
+        {
+            IArchRule repositoryNamingRule = Interfaces()
+                .That()
+                .ResideInNamespace(DomainNamespace, true)
+                .And()
+                .HaveNameContaining("Repository")
+                .Should()
+                .HaveNameStartingWith("I")
+                .AndShould()
+                .HaveNameEndingWith("Repository")
+                .Because(
+                    "Interfaces de repositório devem começar com 'I' e terminar com 'Repository'"
+                );
+
+            repositoryNamingRule.Check(Architecture);
+        }
     }
 }

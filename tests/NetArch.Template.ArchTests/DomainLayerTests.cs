@@ -88,5 +88,32 @@ namespace NetArch.Template.ArchTests
 
             domainEntitiesNoPersistenceRule.Check(Architecture);
         }
+
+        /// <summary>
+        /// Verifica se as entidades de domínio seguem convenções de nomenclatura adequadas.
+        /// As entidades devem ter nomes significativos e não devem terminar com sufixos como 'Entity'.
+        /// </summary>
+        [Fact]
+        public void Domain_Entities_Should_Follow_Naming_Convention()
+        {
+            IArchRule entitiesNamingRule = Classes()
+                .That()
+                .ResideInNamespace(DomainNamespace, true)
+                .And()
+                .AreNot(Interfaces())
+                .And()
+                .AreNotEnums()
+                .And()
+                .DoNotHaveNameEndingWith("Factory")
+                .And()
+                .DoNotHaveNameEndingWith("Service")
+                .And()
+                .DoNotHaveNameEndingWith("Repository")
+                .Should()
+                .NotHaveNameEndingWith("Entity")
+                .Because("Entidades de domínio não devem ter o sufixo 'Entity'");
+
+            entitiesNamingRule.Check(Architecture);
+        }
     }
 }

@@ -187,4 +187,25 @@ public class ApplicationLayerTests : BaseArchitectureTest
 
         serviceInterfaceNamingRule.Check(Architecture);
     }
+
+    /// <summary>
+    /// Verifica se todos os DTOs (Data Transfer Objects) seguem convenções de nomenclatura adequadas.
+    /// Os DTOs devem ter o sufixo 'Dto' para identificar claramente seu papel.
+    /// </summary>
+    [Fact]
+    public void Data_Transfer_Objects_Should_Follow_Naming_Convention()
+    {
+        IArchRule dtoNamingRule = Classes()
+            .That()
+            .ResideInNamespace(ApplicationContractsNamespace, true)
+            .And()
+            .AreNot(Interfaces())
+            .And()
+            .HaveNameContaining("Dto")
+            .Should()
+            .HaveNameEndingWith("Dto")
+            .Because("Data Transfer Objects devem terminar com o sufixo 'Dto'");
+
+        dtoNamingRule.Check(Architecture);
+    }
 }
