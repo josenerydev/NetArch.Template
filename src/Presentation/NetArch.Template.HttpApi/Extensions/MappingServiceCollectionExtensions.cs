@@ -25,7 +25,8 @@ namespace NetArch.Template.HttpApi.Extensions
 
         public static IServiceCollection AddAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(cfg => {
+            services.AddAutoMapper(cfg =>
+            {
                 cfg.AddMaps(typeof(AutoMapperConfig).Assembly);
             });
 
