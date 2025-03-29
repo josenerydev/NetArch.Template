@@ -10,8 +10,8 @@ public static class DbContextServiceCollectionExtensions
 {
     public static IServiceCollection AddInMemoryPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<ApplicationDbContext>(
-            options => options.UseInMemoryDatabase("NetArchTemplateDb")
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseInMemoryDatabase("NetArchTemplateDb")
         );
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();

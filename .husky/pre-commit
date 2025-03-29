@@ -1,6 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-dotnet clean NetArch.Template.sln
-dotnet build NetArch.Template.sln --no-restore
-dotnet test NetArch.Template.sln --no-build --verbosity minimal
+dotnet tool restore
+dotnet csharpier --check .
